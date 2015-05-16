@@ -12,6 +12,7 @@
 #define DEFAULT_H 480
 #endif
 
+SDL_Renderer *display_get_renderer(void);
 void display_init(const char *title, Uint32 windowflags);
 void display_set_fullscreen(bool fullscreen);
 void display_get_fullscreen(void);
@@ -25,5 +26,5 @@ void display_set_grab_cursor(bool grabbed);
 bool display_get_grab_cursor(void);
 void display_swap(void);
 void display_handle_window_event(SDL_WindowEvent *e);
-
+int display_refresh_rate(void);
 #endif
