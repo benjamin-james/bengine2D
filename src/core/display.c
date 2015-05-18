@@ -1,5 +1,5 @@
-#include "display.h"
-#include "debug.h"
+#include "core/display.h"
+#include "util/debug.h"
 
 #include "stdbool.h"
 #include "SDL2/SDL.h"

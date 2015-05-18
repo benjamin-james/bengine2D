@@ -1,4 +1,4 @@
-#include "debug.h"
+#include "util/debug.h"
 
 typedef void (*error_callback)(const char *);
 typedef void (*warning_callback)(const char *);

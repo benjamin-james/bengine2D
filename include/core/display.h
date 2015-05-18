@@ -3,7 +3,6 @@
 
 #include "stdbool.h"
 #include "SDL2/SDL.h"
-
 #ifndef DEFAULT_W
 #define DEFAULT_W 640
 #endif
