@@ -40,27 +40,41 @@ static void get_centroid(struct polygon *p)
 	c.y /= area;
 	p->centroid = c;
 }
-struct polygon polygon_create(int num_pts, struct point *pts)
+static void pt_convert_to_polar(struct point pole, struct point *pt)
 {
-	struct polygon p;
+	struct point old = {pt->x, pt->y};
+	pt->x = distance(pole, old);
+	pt->y = atan2(old.y - pole.y, old.x - pole.x);
+}
+static void poly_convert_to_polar(struct polygon *p)
+{
+	int i;
+	for (i = 0; i < p->num; i++)
+		pt_convert_to_polar(p->centroid, p->pts + i);
+}
+struct polygon *polygon_create(int num_pts, struct point *pts)
+{
+	struct polygon *p = malloc(sizeof(struct polygon));
 	int i;
 	double d;
-	p.num = num_pts;
-	p.pts = malloc(num_pts * sizeof(struct point));
-	memcpy(p.pts, pts, num_pts * sizof(struct point));
-	p.normals = malloc(num_pts * sizeof(struct point));
-	get_centroid(&p);
+	p->num = num_pts;
+	p->pts = malloc(num_pts * sizeof(struct point));
+	memcpy(p->pts, pts, num_pts * sizeof(struct point));
+	p->normals = malloc(num_pts * sizeof(struct point));
+	get_centroid(p);
+	poly_convert_to_polar(p);
 	for (i = 0, d = DOUBLE_MAX; i < num_pts; i++) {
-		if (distance2(p->pts[i], p->centroid) < d) {
-			d = distance(p->pts[i], p->centroid);
+		if (p->pts[i].x < d) {
+			d = p->pts[i].x;
 			p->radius = (float)d;
 		}
 	}
 }
 void polygon_destroy(struct polygon *p)
 {
-	free(p.pts);
-	free(p.normals);
+	free(p->pts);
+	free(p->normals);
+	free(p);
 }
 bool poly_poly_guess(struct polygon *a, struct polygon *b)
 {
